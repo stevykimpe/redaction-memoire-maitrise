@@ -1,0 +1,161 @@
+% ===============================
+% ======= CONSIGNES D'IMPRESSION
+% ===============================
+%    Si le livrable au format .pdf est généré avec PDFLatex et que l'impression est réalisée avec
+%    Acrobat Reader, il est nécessaire de modifier l'option d'impression <<Mise à l'échelle>> sur
+%    la valeur <<Aucune>> afin de respecter le format des marges du document.
+
+
+
+% ===========================
+% ======= CLASSE DU DOCUMENT
+% ===========================
+\documentclass[
+	letterpaper,	   % format papier à lettre requis
+	twoside,		   % recto verson
+	12pt,			   % taille par défaut de la police
+	memoire,		   % type de document (mémoire de maîtrise de recherche)
+	french,			   % langue par défaut
+	creativecommons,   % document soumis à la licence Creative Commons
+	hyperref,		   % utilisation du package {hyperref}
+	withAlgo2e		   % utilisation du package {algorithm2e} pour la mise en page d'algorithme
+]{thETS}			   % fichier source définissant les formats LaTeX
+
+
+
+% =============================================
+% ======= DECLARATION DE LISTES D'UNE LISTE DE
+% ======= REFERENCES ADDITIONNELLES
+% =============================================
+% \newcites{abrv. de la liste de références}{intitulé à afficher e.g. <<Autres références>>}
+
+
+
+% =========================================
+% ======= INFORMATIONS DE LA PAGE DE GARDE
+% =========================================
+\title{Détection, segmentation et identification des vertèbres cervicales dans des radiographies
+biplanaires}                           % Intitulé du mémoire
+
+\newcommand{\concentration}{Concentration en Technologies de l'Information}
+
+\author{Stevy \textsc{Kimpe}}          % Auteur au format page de garde
+\authorcopyright{Stevy Kimpe}          % Auteur au format du copy right
+
+\datesoutenance{25 Décembre 2042}      % Date de la soutenance concluant la maîtrise
+\datedepot{24 Décembre 2042}           % Date du dépôt du mémoire aux bureaux des cycles supérieurs
+
+\directeur{M.}                         % Informations présentatives du directeur de la maîtrise
+    {Jacques \textsc{de Guise}}        % Identité, département et institution
+    {Département génie des systèmes, École de Technologie Supérieure, Montréal}
+
+\codirecteur{M.}                       % Informations présentatives du co-directeur de la maîtrise
+    {Carlos \textsc{Vázquez}}          % Identité, département et institution
+    {Département de génie logiciel et TI, École de Technologie Supérieure, Montréal}
+
+\president{M.}                         % Informations présentatives du président du jury
+    {Prénom Nom}                       % Identité, département et institution
+    {département et institution}
+
+\examinexterne{M.}                     % Informations présentatives d'un examinateur externe membre
+    {Prénom Nom}                       % du jury ; identité, département et institution
+    {département et institution}{}
+
+%\jury{Mme.}                          % Informations présentatives de tout autre membre du jury
+%    {Prénom Nom}                     % Identité, département et institution
+%    {département et institution}{}
+
+
+
+% =======================================================
+% ======= ENREGISTREMENT DES FICHIERS UTILISES PAR LATEX
+% =======================================================
+\listfiles      % Debug : tous les fichiers utilisés et leurs versions figurent dans les logs.
+
+
+
+
+
+
+% ==================================================================================================
+% ==================================================================================================
+% ==============================                                      ==============================
+% ==============================           CORPS DU MÉMOIRE           ==============================
+% ==============================                                      ==============================
+% ==================================================================================================
+% ==================================================================================================
+\begin{document}
+
+%\pagenumbering{Roman}   % Numérotation romaine des pages pour la partie préliminaire (introductive)
+%\maketitle              % Page de garde composée des informations récensées ci-dessus
+%\presentjury            % Présentation du jury
+
+
+%\begin{avantpropos}     % Section de l'avant propos
+
+%\end{avantpropos}
+
+
+%\begin{remerciements}   % Section des remerciements
+%A remplir en fin de rédaction.
+%\end{remerciements}
+
+
+%\begin{sommaire}{mot-clé1, mot-clé2}    % Section de l'abstract (résumé) français
+%A remplir en fin de rédaction.
+%\end{sommaire}
+
+
+%\begin{abstract}{Titre en anglais}{keyword1, keyword2}  % Section de l'abstract en anglais
+%To be completed.
+%\end{abstract}
+
+
+%\tableofcontents    % Table des matières
+%\listoftables       % Liste des tableaux
+%\listoffigures      % Liste des ficgures
+
+
+%\begin{listofabbr}[3cm]     % Liste des abbréviations
+%    \item[CT]      {\itshape Computerized Tomography}, c'est-à-dire tomodensitométrie assistée par
+%                   ordinateur
+%    \item[ETS]     École de Technologie Supérieure
+%    \item[IRM]     Imagerie par Résonance Magnétique
+%    \item[LIO]     Laboratoire de recherche en Imagerie et en Orthopédie
+%\end{listofabbr}
+
+
+%\begin{listofsymbols}[3cm]     % Liste des symboles
+%    \item [3D] en 3 dimensions
+%    \item [SSM] Statistical Shape Model, modèle statistique de forme
+%\end{listofsymbols}
+
+
+%\cleardoublepage                    % Double page blanche de présentation
+%\pagenumbering{arabic}              % Numérotation arabe des pages pour le contenu du mémoire
+%\reversemarginpar                   % Marginpar à gauche du document
+
+
+\begin{introduction}                % Introduction du mémoire
+    \input{introduction}            % définie dans un fichier externe
+\end{introduction}
+
+\begin{revuedelitterature}          % Résumé de la littérature scientifique en lien avec le sujet
+    \input{revuedelitterature}      % détaillée dans un fichier externe
+\end{revuedelitterature}
+
+
+
+% ====================================
+% ======= GESTION DE LA BIBLIOGRAPHIE
+% ====================================
+\newpage
+\begin{spacing}{1}
+    % \nocite{*}                                    % Affichage de toutes les références non citées
+    \bibliographystyle{bibETS}                      % Style bibliographique de l'ÉTS chargé
+    \addcontentsline{toc}{chapter}{BIBLIOGRAPHIE}   % Ajoût de la bibliographie au sommaire
+    \bibliography{biblio}                           % Enregistrement du fichier bibliographique
+\end{spacing}
+
+
+\end{document}

@@ -1,0 +1,87 @@
+L'analyse d'images médicales assistée par ordinateur présente plusieurs enjeux en soi ; la recherche scientifique s'intéresse donc aux nouveaux apports qui peuvent être ajoutés aux méthodes actuelles.
+
+A ce titre, une analyse automatique des radiographies permettrait d'affiner les méthodes de reconstruction {\itshape 3D} des structures osseuses tel que le {\itshape LIO} les étudie. D'autres équipes de chercheurs s'intéressent à l'analyse radiographique assistée par ordinateur afin de fournir des systèmes facilitant l'interprétation des experts médicaux, ce qui présente le bénéfice de réduire le risque de production de diagnostiques erronés.
+\\
+
+Les erreurs de diagnostiques de traumastisme de la colonne vertébrale se présentent fréquemment sur des données radiographiques ; à savoir dans $5$ à $20\%$ des cas selon \cite{Platzer2006}. Un diagnostique erroné entraine des incompréhensions de la pathologie et des retard sur les traitements. Ses conséquences cliniques sont donc non négligeables.
+
+Ainsi, des erreurs de diagnostique sur des troubles vertébraux ont mené à de sévères complications, avec des cas de dégénérescence recensé dans certaines recherches \cite{Francesco2019, Davis1993}, telle qu'une ostéophyte (déformation osseuse) étendue.
+
+Les complications vertébrales sont susceptibles de s'agraver et d'induire des dégénérescences neuronales ou des paraplégies. C'est en particulier le cas des traumatismes cervicaux dont l'impact sévére est immédiat.
+\\
+
+Ce chapitre présente un résumé de l'étude de la littérature en lien avec l'analyse cervicale.
+
+Dans un premier temps, l'anatomie cervicale et les systèmes d'imagerie {\itshape 2D} et {\itshape 3D} sont décrits afin de mieux appréhender les modalités du diagnostique cervical.
+
+Ensuite, l'état de l'art de la détection, la segmentation et l'identification cervicale est développé.
+
+Enfin, une méthodologie à suivre pour la suite de la recherche est proposée.
+
+
+\section{Diagnostiquer l'état des vertèbres cervicales}
+    \subsection{Anatomie des vertèbres cervicales}
+    \subsection{Imagerie {\itshape 3D}}
+        \subsubsection{Tomodensitométrie ({\itshape CT})}
+        \subsubsection{Imagerie par Résonance Magnétique ({\itshape IRM})}
+        \subsubsection{Reconstruction {\itshape 3D} à partir de radiographies biplanaires}
+    \subsection{Imagerie {\itshape 2D}}
+
+
+\section{Détection des vertèbres cervicales}
+
+    La détection vertébrale est généralement traitée selon trois axes principaux.
+    \begin{enumerate}
+        \item Souvent proposées comme étapes de prétraitement réduisant la zone de recherche, la littérature scientifique exhibe plusieurs méthodes de détection de régions vertébrales ; à savoir des zones réduites de l'image contenant les vertèbres cibles.
+        \item La littérature associe principalement la détection vertébrale à la détection de certains marqueurs vertébraux choisis arbitrairement tels que les centres ou coins vertébraux.
+        \item L'état de l'art propose également des méthodes de segmentation instantanée, combinant la détection vertébrale et l'extration des contours vertébraux en une unique étape. Ces méthodes, basées sur des techniques d'apprentissage profond, sont détaillées dans la section suivante.
+        \\
+    \end{enumerate}
+
+    \subsection{Localisation de régions vertébrales}
+
+        Les méthodes initialement proposées avaient le mérite d'être simples, mais le défaut de ne pas être totalement automatique et de nécessiter l'intervention d'un utilisateur pour plusieurs tâches de prétraitement.
+
+        La détection semi-automatique d'une région quadrilatère autour des cervicales C3 à C7 fut par exemple mise en place dans \cite{Benjelloun2006a} pour des radiographie latérales. La méthode proposée applique une fonction de modélisation des zones inter- et intra-vertébrales pour déterminer les délimitations du quadrilatère. La construction de cette fonction nécessite toutefois qu'un opérateur clique sur chaque centre vertébraux des cervicales C3 à C7. L'automatisation de cette technique est donc non optimale puisque chaque vertèbres nécessite une entrée ; cela reste acceptable pour les cinq cervicales traitées mais ne peut s'étendre aux douze vertèbres thoraciques et cinq lombaires sans une perte de temps conséquente pour l'utilisateur.
+        \\
+
+        Des méthodes totalement automatiques de détection de la région cervicale dans des radiographies en vue sagittale furent proposées une dizaine d'années plus tard dans \cite{AlArif2016a} puis \cite{AlArif2017a}.
+
+        Le premier papier présente une méthode découpant en un premier temps l'image médicale en plusieurs patchs de mêmes tailles et orientations ; et une forêt aléatoire de Hough performe une classification binaire pour déterminer si la région d'intérêt cible est contenue en partie dans ce patch. Dans un deuxième temps, la région sélectionnée est redécoupée avec des patchs de tailles et orientations variables, permettant par la classification binaire une sélection fine de la région cervicale.
+
+        {\itshape Al Arif et al.} proposent ensuite une méthode associant la localisation de la région cervicale avec un problème de segmentation avec une faible résolution de l'image médicale. Cette technique se base sur l'utilisation de réseaux de neurones profonds totalement convolutifs, afin d'extraire la zone cervicale de la radiographie en classant chaque pixel comme ciblé ou non. Cette approche s'appuie sur le succés grandissant de l'apprentissage profond dans l'analyse médicale assistée par ordinateur. Une fois entrainé, le réseau est capable de détecter la région d'intérêt directement à partir de l'image médicale.
+
+        La technique initialement proposée par {\itshape Al Arif} fournit une région cible contenant les cervicales C3 à C6 dans $100\%$ des cas testés et la C7 dans $70\%$ des cas. La seconde technique corrige ce phénomène avec une précision de la classification par pixel attenant les $99\%$ sur des images à faible résolution. Elle présente également l'avantage de nécessiter un moindre temps de prédiction. Toutefois, ces deux méthodes se révèlent très sensibles à la présence d'implants et aux fortes déformations du rachis cervical.
+        \\
+
+        Certains travaux permettent également l'extraction des régions vertébrales thoraciques et lombaires dans des vues frontales, et méritent donc d'être citées puisque peu de recherche sur les cervicales sont réalisées en vue frontale.
+
+        A ce titre, \cite{Ebrahimi2018} propose une méthode de détection des pédicules des vertèbres thoraciques et lombaires en vue frontale et utilise la méthode de \cite{Humbert2009} pour restreindre la zone de recherche. La méthodologie semi-automatique proposée par {\itshape Humbert et al.} consiste en l'application de deux modèles paramétriques couplés : un pour la forme globale de la colonne vertébrale, et un second pour la forme vertébrale. Ces modèles sont respectivement modifiés par une inférence statistique \og longitudinale \fg et une \og transversale \fg pour affiner la forme de la colonne.
+
+        Cette recherche est poursuivie par \cite{Aubert2016} qui propose de régresser les centres des vertèbres thoraciques et lombaires avec un réseau de neurones profond, et initialise ensuite un modèle statistique de forme ({\itshape SSM}) qui s'affine pour décrire la colonne vertébrale. Cette méthode automatise la précédente en restant dans l'utilisation de modèles statistiques représentant le rachis.
+        \\
+
+        Ces différentes méthodes ont un intérêt fort pour différentes recherches puisqu'en réduisant la zone d'intérêt à la région cervicale, les traitements ultérieurs voient leur complexité de calcul réduite. Toutefois, une majorité des recherches assimilent la détection des vertèbres à la celle de certains de leurs points de repère ; ces recherches sont étudiées dans la sous-section suivante.
+        \\\\
+
+    \subsection{Localisation des marqueurs cervicaux}
+
+        En terme de détection des vertèbres cervicales, l'état de l'art se concentrait initialement sur la localisation de marqueurs anatomiques, et une majorité des recherches abordent cette problématique.
+
+        Ce type d'approches fournit par exemple des informations suffisantes pour l'estimation de l'orientation vertébrale le long de la colonne cervicale, ainsi que quelques autres paramètres cliniques utiles aux radiologues. Les marqueurs cervicaux régressés présentent également l'intérêt de servir à l'initialisation de certaines techniques de segmentation.
+        \\
+
+        Diverses techniques furent mises au point dans ce contexte. Ainsi, \cite{}
+
+
+
+
+
+
+
+
+\section{Segmentation vertébrale}
+
+\section{Identification vertébrale}
+
+\section{Méthodologie proposée}
