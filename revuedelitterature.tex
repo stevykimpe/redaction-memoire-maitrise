@@ -61,23 +61,48 @@ Enfin, une méthodologie à suivre pour la suite de la recherche est proposée.
         Cette recherche est poursuivie par \cite{Aubert2016} qui propose de régresser les centres des vertèbres thoraciques et lombaires avec un réseau de neurones profond, et initialise ensuite un modèle statistique de forme ({\itshape SSM}) qui s'affine pour décrire la colonne vertébrale. Cette méthode automatise la précédente en restant dans l'utilisation de modèles statistiques représentant le rachis.
         \\
 
-        Ces différentes méthodes ont un intérêt fort pour différentes recherches puisqu'en réduisant la zone d'intérêt à la région cervicale, les traitements ultérieurs voient leur complexité de calcul réduite. Toutefois, une majorité des recherches assimilent la détection des vertèbres à la celle de certains de leurs points de repère ; ces recherches sont étudiées dans la sous-section suivante.
+        Ces différentes méthodes ont un intérêt fort pour différentes recherches puisqu'en réduisant la zone d'intérêt à la région cervicale, les traitements ultérieurs voient leur complexité de calcul réduite. Toutefois, une majorité des recherches assimilent la détection des vertèbres à celle de certains de leurs points de repère ; ces recherches sont étudiées dans la sous-section suivante.
         \\\\
 
     \subsection{Localisation des marqueurs cervicaux}
 
         En terme de détection des vertèbres cervicales, l'état de l'art se concentrait initialement sur la localisation de marqueurs anatomiques, et une majorité des recherches abordent cette problématique.
-
-        Ce type d'approches fournit par exemple des informations suffisantes pour l'estimation de l'orientation vertébrale le long de la colonne cervicale, ainsi que quelques autres paramètres cliniques utiles aux radiologues. Les marqueurs cervicaux régressés présentent également l'intérêt de servir à l'initialisation de certaines techniques de segmentation.
         \\
 
-        Diverses techniques furent mises au point dans ce contexte. Ainsi, \cite{}
+        Une application de la transformée généralisée de Hough permit par exemple à \cite{Lahrmam2012} de régresser les centres vertébraux des cervicales C3 à C7 sur des radiographies en coupe sagittale. L'étude exhibe un taux de détection à $96.5\%$, supérieur à l'état de l'art de la localisation de centre vertébraux qui se concentrait alors sur les lombaires.
 
+        Cette technique se valorise en permettant notamment l'automatisation de méthodes d'extraction de la région cervicale comme celle de \cite{Benjelloun2006a}.
+        \\
 
+        Le diagnostique de la mobilité cervicale nécessitant simplement la mesure des orientations vertébrales, la détection des coins vertébraux la rend possible. Dans cette optique, \cite{Mahmoudi2007} propose d'isoler les cervicales C3 à C7 dans des quadrilatéres selon \cite{Benjelloun2006a} pour y appliquer un détecteur de coins de {\itshape Harris} qui fournit un set de pixels candidats en tant que coins vertébraux. Ces candidats sont ensuite filtrés en fonction de leur proximité les uns des autres et des valeurs qui leur sont associés par la fonction de réponse du détecteur de {\itshape Harris}.
 
+        Cette étude rend compte de la difficulté qu'implique l'utilisation de ces détecteurs : un nombre trop important de candidats sont proposés. Pour pallier à ce problème, ce papier propose également une étape de prétraitement du contraste de l'image médicale afin de rendre les bords des vertèbres davantage visibles.
 
+        Inspiré par cette méthodologie, \cite{Benjelloun2009} propose l'extraction des coins antérieurs des vertèbres C3 à C7 à parti d'un unique clique sur un centre vertébral. Une zone de recherche se dessine autour de ce clique et un détecteur de {\itshape Harris} est appliqué. Les deux premiers coins sont alors sélectionnés par rapport à leurs distances au clique et à la valeur du gradient de l'image en ses points. Un traitement itératif est alors lancé, traçant une parabole passant par les coins déjà détectés afin de délimiter les zones de recherche supérieure et inférieure des deux coins suivants par application répétée des détecteurs de {\itshape Harris} et de la sélection des meilleurs candidats. L'article présent enfin une inférence statistique visant à estimer les coins non détectés par la méthode proposée.
 
+        Malgré les divers processus de prétraitement de contraste proposés, les filtres de pixels candidats à coins vertébraux et les post-traitements permettant une estimation statistique des coins non détectés, les techniques basées sur l'utilisation des détecteurs de {\itshape Harris} sont difficilement améliorables. En effet, ces outils sont très sensibles au bruitage présent en réseau de la superposition des os, et sont ainsi amener à fournir une trop grande abondance de pixels candidats ou de ne pas détecter certains marqueurs.
+        \\
 
+        Afin de proposer une solution alternative, \cite{Lecron2010} présente une utilisation détournée de l'approximation polygonale de contours, généralement utilisée pour approcher une forme géométrique à partir d'un ensemble de points, pour détecter les quatre coins vertébraux en adaptant un quadrilatère à la forme de chaque cervicale ciblée. Cette méthode nécessite un pré-traitement sur le contraste et un filtrage de {\itshape Canny} afin de mettre en évidence les contours osseux présents dans la radiographie.
+
+        \cite{Lecron2010} se compare à \cite{Mahmoudi2007} afin de montrer sa fiabilité quant à l'analyse de la mobilité cervicale, et obtient des résultats satisfaisant avec des écarts angulaires inférieurs à ceux de la méthode initiale de {\itshape Mahmoudi et al.} par rapport à des mesures réalisées par des experts. L'avantage par rapport au détecteur de coins de {\itshape Harris} consiste principalement en la réduction du nombre d'hyperparamètres et de la sensibilité de la détection au bruit.
+
+        Cette technique se complète avec \cite{Lecron2012b, Lecron2012c} qui étudient l'identification des coins cervicaux antérieurs détectés par approximation polygonale. Pour chaque coin antérieur, les descripteurs {\itshape SIFT} et {\itshape SURF} sont utilisés en fonction de l'article pour générer des caractéristiques visuelles qui permettent à un {\itshape SVM} pré-entrainé de classer ces coins dans les catégories antérieurs supérieurs ou inférieurs.
+
+        \cite{Lecron2012a} rapporte que l'utilisation des descripteurs {\itshape SURF} est la plus adaptée pour les cervicales C3 à C6, mais qu'à l'inverse {\itshape SIFT} fonctionne davantage pour la C7. De plus, il propose un processus de correction en inférant les coins non détectés en prenant en compte les alternances antérieur inférieur/supérieur. La classification des coins est précise à $92.5\%$, et ils sont détectés avec une distance euclidienne moyenne de $2.9 mm$ entre les points prédits et les annotations.
+        \\
+
+        Des techniques d'apprentissage automatique sont également utilisées à ces fins dans la littérature. \cite{AlArif2015a, AlArif2015b} présentent ainsi une procédure d'estimation de la position des coins vertébraux par une forêt aléatoire de {\itshape Hough} établissant sa prédiction à partir les caractéristiques pseudo-\textit{Haar} de patchs variés extraits de l'image médicale.
+
+        Dans la continuité de l'utilisation d'une forêt aléatoire de {\itshape Hough}, \cite{AlArif2017c} propose d'entrainer le modèle sur des caractéristiques visuelles contextuelles et de le rendre invariant aux changements d'échelle et aux rotations en l'entrainé sur des patchs de propriétés diverses. La forêt aléatoire est entrainée sur un ensemble de données particuliérement difficile, la rendant ainsi robuste, puisqu'il contient des radiographies de résolutions, échelles et qualités variées ainsi que certaines présentant de sévéres troubles cervicaux ou des implants. Il exhibe une distance moyenne point à point entre les prédictions et les données de validation de $2.3 mm$ et met également en évidence que ces résultats sont équivalents aux annotations manuelles d'un expert, puisque celles-ci sont sujettes à l'interprétation.
+
+        Les réseaux de neurones sont également mis à l'honneur pour la localisation de marqueurs anatomiques cervicaux en coupe sagittale. \cite{Slabaugh2017} propose l'entrainement d'un réseau de neurones totalement convolutifs sur des distributions de probabilités d'être un pixel représentant un coin vertébral. L'idée cachée derrière cet entrainement est qu'il n'existe pas de marqueur visible défini pour les coins vertébraux dont les angles sont arrondis ; une telle distribution en tant qu'annotation d'entrainement permet de neutraliser davantage la subjectivité de l'interprétation de l'expert ayant annoté la base de données.
+
+        Dans ce même papier, {\itshape Slabaugh et al.} compare les performances de ce réseau de neurones aux forêts aléatoires de {\itshape Hough} sur les mêmes données challengeantes ; le premier modèle présente une distance euclidienne moyenne de $1.5 mm$ entre les prédiction sur les données de validation et leurs annotations, et le second $2.5 mm$. Le réseau de neurones fournit ainsi une approche rapide et efficace pour la détection des marqueurs anatomiques. Toutefois, ce modèle reste sensible à la présence d'implants ou à une trop forte pathologie cervicale.
+        \\
+
+        La localisation des vertèbres selon certains marqueurs peut donc suffir à l'analyse de la mobilité des patients ; mais pour une reconstruction {\itshape 3D}, les délimitations des cervicales forment une information de première valeur. La section suivante de cette revue de la littérature se concentre ainsi sur la segmentation des cervicales dans des radiographies.
+        \\\\
 
 
 \section{Segmentation vertébrale}
