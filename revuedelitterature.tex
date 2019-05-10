@@ -1,4 +1,4 @@
-L'analyse d'images médicales assistée par ordinateur présente plusieurs enjeux en soi ; la recherche scientifique s'intéresse donc aux nouveaux apports qui peuvent être ajoutés aux méthodes actuelles.
+
 
 A ce titre, une analyse automatique des radiographies permettrait d'affiner les méthodes de reconstruction {\itshape 3D} des structures osseuses tel que le {\itshape LIO} les étudie. D'autres équipes de chercheurs s'intéressent à l'analyse radiographique assistée par ordinateur afin de fournir des systèmes facilitant l'interprétation des experts médicaux, ce qui présente le bénéfice de réduire le risque de production de diagnostiques erronés.
 \\
@@ -19,13 +19,40 @@ Ensuite, l'état de l'art de la détection, la segmentation et l'identification 
 Enfin, une méthodologie à suivre pour la suite de la recherche est proposée.
 
 
-\section{Diagnostiquer l'état des vertèbres cervicales}
-    \subsection{Anatomie des vertèbres cervicales}
-    \subsection{Imagerie {\itshape 3D}}
-        \subsubsection{Tomodensitométrie ({\itshape CT})}
-        \subsubsection{Imagerie par Résonance Magnétique ({\itshape IRM})}
-        \subsubsection{Reconstruction {\itshape 3D} à partir de radiographies biplanaires}
-    \subsection{Imagerie {\itshape 2D}}
+\section{Contextualisation}
+
+    L'analyse d'images médicales assistée par ordinateur présente plusieurs enjeux en soi, et c'est la raison qui motive la recherche scientifique à s'intéresser aux nouveaux apports qui peuvent être ajoutés aux méthodes actuelles.
+    \\
+
+    En dehors de l'attente d'obtenir des informations fines permettant une reconstruction {\itshape 3D} davantage précise, une extraction de la localisation et des contours vertébraux permet une automatisation des calculs des paramètres cliniques conduisant les radiologues au diagnostique de la mobilité cervicale.
+
+    Ces informations permettraient alors de réduire le risque de mauvaises interprétations des radiographies de la part des experts médicaux, puis qu'un automatisme leur permettra d'obtenir des informations fiables cruciales au bon déroulement de l'analyse médicale.
+    \\\\
+
+    \subsection{L'impact des diagnostiques erronés}
+
+    Selon \cite{Platzer2006}, les diagnostiques vertébraux erronés surviennent dans $5$ à $20\%$ des cas. La problématique suivante s'impose alors : les traumatismes de la colonne vertébrale mal diagnostiqués
+    \subsection{Les systèmes d'imageries médicales}
+        \subsubsection{L'imagerie par résonance magnétique}
+        \subsubsection{La tomodensitométrie}
+        \subsubsection{Les radiographies à rayons X}
+        \subsubsection{Intérêt d'une reconstruction {\itshape 3D} à partir de radiographies biplanaires}
+\section{Anatomie des vertèbres cervicales}
+\section{Des approches de traîtement de l'image}
+    \subsection{Amélioration de contraste}  % 2 algos
+    \subsection{Détecteurs de marqueurs visuels}
+        % Harris, GHT, Canny
+\section{Des approches d'apprentissage automatique}
+    \subsection{Forêt aléatoire}
+    \subsection{Réseau de neurones}
+    % où décrire les modèles statistiques ?
+
+
+
+
+
+
+
 
 
 \section{Détection des vertèbres cervicales}
@@ -106,6 +133,34 @@ Enfin, une méthodologie à suivre pour la suite de la recherche est proposée.
 
 
 \section{Segmentation vertébrale}
+
+    La littérature propose différentes approches de segmentation dans le cadre du traitement d'image médicale.
+
+    Ainsi, \cite{Benjelloun2006b, Benjelloun2007} proposent par exemple une détection des bords vertébraux basée sur une évaluation de la signature polaire et du gradient d'intensité afin d'extraire un ensemble de points appartenant au contour de la vertèbre ; puis un assemblement de splines cubiques reforme approximativement le contour de la vertèbre.
+
+    \cite{Benjelloun2008} compare cette méthode initiale à un modèle dynamique de contours discrets, proposé par \cite{Lobregt1995}, qui après initialisation adapte sa forme en analysant les propriétés locales de l'image médicale comme des forces internes et externes qui font converger les points de contrôle du modèle vers leurs positions finales sur le contour.
+    \\
+
+    La majorité des approches de segmentation de corps osseux dans une radiographie se distinguent principalement en deux catégories :
+
+    \begin{enumerate}
+        \item Premièrement, les approches basées sur les dérivées du modèle statistique de formes, comme l'{\itshape Active Shape Model} ({\itshape ASM}) initialement proposé par \cite{Cootes1995}, exhibent de bonnes performances car elles tiennentt compte de la forme globale du coprs segmenté.
+        \item Avec le succés grandissant de l'apprentissage automatique en analyse d'images médicales, des méthodes de classification de pixels ou de régression de caractéristiques de formes sont mises en place.
+        \\
+    \end{enumerate}
+
+    \subsection{Approche statistique}
+
+        L'application des modèles statistiques de forme pour la segmentation des vertèbres C3 à C7 en vue sagittale fut proposée par \cite{Benjelloun2010}. Un modèle de forme moyen {\itshape ASM} est généré à l'entrainement. Une recherche est initialisée pour chaque cervicale cible grâce aux cliques d'un opérateur sur ses coins antérieurs. Cette étude démontre l'efficacité de l'{\itshape ASM} dans le cadre de la segmentation des vertèbres cervicales : en moyenne, $93\%$ des surfaces vertébrales sont segmentées.
+        \\
+
+        \cite{Lecron2010} propose d'automatiser cette approche en se passant des cliques d'un opérateur pour l'initialisation. En lieu et place, les coins antérieurs des vertèbres C3 à C7 sont détectés automatiquement par approximation polygonale, telle que décrite dans la section précédente. Cette technique permet, accompagner d'une régression complétant les coins non détectés, une détection des coins satisfaisante afin que les initialisations des modèles vertébraux {\itshape ASM} soient proches des vertèbres cibles et réussissent au mieux la segmentation.
+
+        \cite{Mahmoudi2010} propose alors d'améliorer la méthodologie de \cite{Lecron2010} selon un gain de coût temporel. En effet, en raison du filtrage de {\itshape Canny}, qui représente un processus de traitement de l'image coûteux, l'initialisation est une étape qui demandeuse en terme calculatoire.
+
+
+
+    \subsection{Approche par apprentissage automatique}
 
 \section{Identification vertébrale}
 
