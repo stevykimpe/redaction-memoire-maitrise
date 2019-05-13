@@ -156,7 +156,11 @@ Enfin, une méthodologie à suivre pour la suite de la recherche est proposée.
 
         \cite{Lecron2010} propose d'automatiser cette approche en se passant des cliques d'un opérateur pour l'initialisation. En lieu et place, les coins antérieurs des vertèbres C3 à C7 sont détectés automatiquement par approximation polygonale, telle que décrite dans la section précédente. Cette technique permet, accompagner d'une régression complétant les coins non détectés, une détection des coins satisfaisante afin que les initialisations des modèles vertébraux {\itshape ASM} soient proches des vertèbres cibles et réussissent au mieux la segmentation.
 
-        \cite{Mahmoudi2010} propose alors d'améliorer la méthodologie de \cite{Lecron2010} selon un gain de coût temporel. En effet, en raison du filtrage de {\itshape Canny}, qui représente un processus de traitement de l'image coûteux, l'initialisation est une étape qui demandeuse en terme calculatoire.
+        Cette méthodologie permet à cette équipe de proposer un {\itshape framework} d'analyse automatique des vertèbres cervicales C3 à C7 dans des radiographies biplanaires. L'utilisation de l'approximation polygonale pour détecter les coins antérieurs des vertèbres permet une initialisation du modèle statistique proche de la cervicale cible. Ainsi, la recherche {\itshape ASM} est lancée dans les conditions adéquates à sa convergence vers la forme vertébrale voulue
+
+        \cite{Mahmoudi2010} propose alors d'améliorer la méthodologie de \cite{Lecron2010} selon un gain de coût temporel. En effet, en raison du filtrage de {\itshape Canny}, qui représente un processus coûteux de traitement de l'image, l'initialisation du modèle {\itshape ASM} est une étape exigente en terme calculatoire. La proposition est ainsi d'utiliser une architecture mutlti-coeurs associant des processeurs et des cartes graphiques afin de paralléliser le filtrage de {\itshape Canny}.
+
+        Cette idée fut reprise dans \cite{Lecron2011} qui démontre qu'une architecture combinant quatre coeurs de processeurs graphiques et huit coeurs classiques détecte et segmente les cervicales selon cette méthodologie vingt fois plus vite qu'un simple processeur.
 
 
 
